@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView mListView;
     private static String URL ="http://www.23wx.com/html/55/55519/";
-    private String[] a=new String[]{"1","2","3","4"};
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,136 +49,63 @@ public class MainActivity extends AppCompatActivity {
 
         mListView= (ListView) findViewById(R.id.lv_main);
 
-        ArrayAdapter adapter=new ArrayAdapter(MainActivity.this,R.layout.simple_item,a);
+
+        mListView.setAdapter(arrayAdapter);
 
 
-
-        //new FictionAsyncTask().execute(URL);
+        new FictionAsyncTask().execute(URL);
 
 
     }
 
-    class FictionAsyncTask extends AsyncTask<String,Void,List<FictionsBean>>{
+    class FictionAsyncTask extends AsyncTask<String,Void,List<String>>{
 
-        //Document doc;
-        //List<String> titleList=new ArrayList<>();
+
 
 
         @Override
-        protected List<FictionsBean> doInBackground(String... params) {
+        protected List<String> doInBackground(String... params) {
 
-
+            List<String> titleList=new ArrayList<>();
             Document doc;
 
-            doc=Jsoup.parse(params[0]);
 
-            List<FictionsBean> fictionsBeanList=new ArrayList<>();
-
-
-
-            Elements links = doc.select("a[href]"); //带有href属性的a元素
-
-            for (Element link : links) {
-                FictionsBean fictionsBean=new FictionsBean();
+            try {
+                doc=Jsoup.connect(params[0]).get();
+                Elements links=doc.select("td.L");
 
 
-                String linkHref = link.attr("href");
-                String linkText = link.text();
-
-                fictionsBean.fictionTitle=linkText;
-                fictionsBean.fictionUrl=linkHref;
+                for (Element link : links) {
 
 
-                Log.i("info",linkText);
+                    //String linkHref = link.getElementsByTag("a").attr("href");
+                    String linkText = link.text();
 
-                fictionsBeanList.add(fictionsBean);
+
+                    //Log.i("info",linkHref);
+
+
+                    titleList.add(linkText);
+
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            return fictionsBeanList;
+
+
+            return titleList;
         }
 
         @Override
-        protected void onPostExecute(List<FictionsBean> fictionsBeen) {
-            super.onPostExecute(fictionsBeen);
-            FictionAdapter adapter=new FictionAdapter(MainActivity.this,fictionsBeen);
-            mListView.setAdapter(adapter);
+        protected void onPostExecute(List<String> titleList) {
+            super.onPostExecute(titleList);
+            //FictionAdapter adapter=new FictionAdapter(MainActivity.this,fictionsBeen);
+            arrayAdapter=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,titleList);
+            mListView.setAdapter(arrayAdapter);
         }
   }
-
-//    private List<String> getJsonData(String url){
-//        List<String> nameList=new ArrayList<>();
-//
-//        try {
-//            String jsonString = readStream(new URL(url).openStream());
-//
-//            JSONObject jsonObject1;
-//            JSONObject jsonObject2;
-//            String name;
-//
-//            try {
-//                jsonObject1=new JSONObject(jsonString);
-//                JSONArray jsonArray1=jsonObject1.getJSONArray("tbody");
-//
-//                for(int i=0;i<jsonArray1.length();i++){
-//                    jsonObject2=new JSONObject()
-//
-//                }
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//            Log.i("info",jsonString);
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        return nameList;
-//    }
-//
-//
-//
-//
-//
-//    private String readStream(InputStream is){
-//        InputStreamReader isr;
-//        String result="";
-//
-//        String line="";
-//        try {
-//            isr=new InputStreamReader(is,"utf-8");
-//            BufferedReader br=new BufferedReader(isr);
-//
-//            try {
-//                while ((line=br.readLine())!=null){
-//                    result+=line;
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        return result;
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
