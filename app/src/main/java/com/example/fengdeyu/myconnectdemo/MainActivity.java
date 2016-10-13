@@ -1,5 +1,6 @@
 package com.example.fengdeyu.myconnectdemo;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     List<String> titleList=new ArrayList<>();//总章节名
     List<String> cutTitleList=new ArrayList<>();//页章节名
     List<String> pageList=new ArrayList<>();//页名
+
+    private int currentPage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(final List<String> titleList) {
             super.onPostExecute(titleList);
 
+
+
+
             cutTitleList=cutList(titleList,1);
             arrayAdapter1=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,cutTitleList);
             mListView.setAdapter(arrayAdapter1);
@@ -159,9 +166,11 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     //cutTitleList.clear();
-                    cutTitleList=cutList(titleList,position+1);
+                    currentPage=position+1;
 
+                    cutTitleList=cutList(titleList,currentPage);
                     arrayAdapter1=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,cutTitleList);
+
 
                     mListView.setAdapter(arrayAdapter1);
 
@@ -177,6 +186,9 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
+
+
+
   }
     public List<String> cutList(List<String> titlelist,int currentPage){
         Page page=new Page(titlelist.size()/40,currentPage,40);
@@ -184,6 +196,29 @@ public class MainActivity extends AppCompatActivity {
             return titlelist.subList(page.getStartIndex(),titlelist.size());
         }
         return titlelist.subList(page.getStartIndex(),page.getEndIndex());
+    }
+
+
+
+    public void pageChange(View v){
+        switch (v.getId()){
+            case R.id.page_up:
+                if(currentPage!=1) {
+
+                    currentPage-=2;
+                    spinner.setSelection(currentPage);
+
+                }
+                    break;
+
+            case R.id.page_down:
+                if(currentPage!=(titleList.size()/40)+1) {
+
+                    spinner.setSelection(currentPage);
+
+                }
+                break;
+        }
     }
 
 }

@@ -1,9 +1,11 @@
 package com.example.fengdeyu.myconnectdemo;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -16,6 +18,8 @@ import java.io.IOException;
 public class ContentsActivity extends AppCompatActivity {
 
     private TextView tvContents;
+
+    ProgressDialog bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class ContentsActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+
+            bar.dismiss();
+
             StringBuilder sb =new StringBuilder(s);
 //            sb.insert(sb.indexOf(" "),"\n");
 
@@ -79,6 +86,19 @@ public class ContentsActivity extends AppCompatActivity {
 
 
             tvContents.setText(sb);
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+
+            bar = new ProgressDialog(ContentsActivity.this);
+            bar.setMessage("正在加载数据····");
+            bar.setIndeterminate(false);
+            bar.setCancelable(false);
+            bar.show();
         }
     }
 }
