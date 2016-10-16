@@ -39,6 +39,8 @@ import java.net.URL;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -117,23 +119,30 @@ public class MainActivity extends AppCompatActivity {
                 Elements links=doc.select("td.L");
 
 
+
+
                 for (Element link : links) {
 
 
                     String linkHref = link.getElementsByTag("a").attr("href");
                     String linkText = link.text();
 
-
-                    //Log.i("info",linkHref);
-                    titlesUrl.putString(linkText,linkHref);
+                    if(linkText!="") {
 
 
-                    titleList.add(linkText);
+                        //Log.i("info",linkHref);
+                        titlesUrl.putString(linkText, linkHref);
+
+
+                        titleList.add(linkText);
+                    }
 
                 }
 
 
             } catch (IOException e) {
+
+
                 e.printStackTrace();
             }
 
@@ -148,16 +157,28 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            if(titleList.size()>1) {
+                titleList.remove(titleList.size() - 1);
+                titleList.remove(titleList.size() - 1);
+                titleList.remove(titleList.size() - 1);
+                titleList.remove(titleList.size() - 1);
+            }
 
+           // Collections.reverse(titleList);
             cutTitleList=cutList(titleList,1);
+
             arrayAdapter1=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,cutTitleList);
             mListView.setAdapter(arrayAdapter1);
 
 
 
-            for (int i=1;i<(titleList.size()/40)+2;i++){
+
+
+            for (int i=1;i<(titleList.size()/40)+3;i++){
                 pageList.add("第"+i+"页");
             }
+
+
             arrayAdapter2=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,pageList);
             spinner.setAdapter(arrayAdapter2);
 
