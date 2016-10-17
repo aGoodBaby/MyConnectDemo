@@ -70,8 +70,16 @@ public class MainActivity extends AppCompatActivity {
 
         //mListView.setAdapter(arrayAdapter);
 
+        FictionAsyncTask ficAsy=new FictionAsyncTask();
 
-        new FictionAsyncTask().execute(URL); //执行FictionAsyncTask()
+
+
+
+
+        ficAsy.execute(URL); //执行FictionAsyncTask()
+
+
+
 
 
 
@@ -102,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     class FictionAsyncTask extends AsyncTask<String,Void,List<String>>{
+
 
 
 
@@ -145,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
                 e.printStackTrace();
             }
+
 
 
 
@@ -210,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-  }
+    }
     public List<String> cutList(List<String> titlelist,int currentPage){
         Page page=new Page(titlelist.size()/40,currentPage,40);
         if(page.getEndIndex()>titlelist.size()){
@@ -241,5 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 
 }
