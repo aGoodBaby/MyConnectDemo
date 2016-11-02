@@ -137,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     String linkHref = link.getElementsByTag("a").attr("href");
                     String linkText = link.text();
 
+//                    Log.i("info",link.getElementsByTag("a").attr("href")+"123");
+
+
+
                     if(linkText!="") {
 
 

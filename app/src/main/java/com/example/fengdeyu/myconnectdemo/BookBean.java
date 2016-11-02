@@ -5,7 +5,6 @@ package com.example.fengdeyu.myconnectdemo;
  */
 
 public class BookBean {
-    public String bookIconUrl;
     public String bookTitle;
     public String bookContent;
 }

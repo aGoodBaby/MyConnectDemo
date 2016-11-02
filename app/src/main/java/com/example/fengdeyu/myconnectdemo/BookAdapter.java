@@ -44,7 +44,6 @@ public class BookAdapter extends BaseAdapter {
         if(convertView==null){
             viewHolder=new ViewHolder();
             convertView=mInflater.inflate(R.layout.book_item_layout,null);
-            viewHolder.ivIcon= (ImageView) convertView.findViewById(R.id.iv_icon);
             viewHolder.tvTitle= (TextView) convertView.findViewById(R.id.tv_title);
             viewHolder.tvContent= (TextView) convertView.findViewById(R.id.tv_content);
             convertView.setTag(viewHolder);
@@ -52,7 +51,7 @@ public class BookAdapter extends BaseAdapter {
             viewHolder= (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.ivIcon.setImageResource(R.mipmap.ic_launcher);
+
         viewHolder.tvTitle.setText(mList.get(position).bookTitle);
         viewHolder.tvContent.setText(mList.get(position).bookContent);
 
@@ -62,7 +61,7 @@ public class BookAdapter extends BaseAdapter {
 
     class ViewHolder{
         public TextView tvTitle,tvContent;
-        public ImageView ivIcon;
+
     }
 
 }
